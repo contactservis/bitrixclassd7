@@ -45,12 +45,14 @@ class DemoClass extends CBitrixComponent
             // фильтр
             $arFilter = Array(
                 'IBLOCK_ID' => IntVal($IBlock_id),                
-                'PROPERTY_NAME-USER-PROPERTY' => '' // Фильтр по пользовательскому свойству
+                'PROPERTY_NAME-USER-PROPERTY' => '', // Фильтр по пользовательскому свойству
+                'ID' => array() // Можно задать массив с ID элементов
             );
 
             // количество на странице, номер страницы ...
             $arPage = Array(
-                'nPageSize'=>10
+                'nPageSize'=>10,
+                "iNumPage" => 1
             );
 
             // запрос с параметрами
@@ -84,14 +86,18 @@ class DemoClass extends CBitrixComponent
             
     }
 
+
+
     // 
     public function executeComponent()
     {
             // добавляем параметры в arResult  который пойдет в шаблон
-            $this->arResult = array_merge($this->arResult, $this->paramsUser($this->arParams));          
+            $this->arResult             = array_merge($this->arResult, $this->paramsUser($this->arParams));
+            
+            // получить элементы со свойствами с фильтром по свойствам
+            $this->arResult['ELEMENTS'] = $this->getElementsByID($this->arResult['ELEMENT_ID']);
 
-            // получить элемент по ID
-            $this->arResult['ELEMENT']      = $this->getElementByID($this->arResult['ELEMENT_ID']);            
+            // получить 
 
             // подключение шабона
             $this->includeComponentTemplate();
